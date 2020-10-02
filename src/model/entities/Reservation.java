@@ -38,17 +38,29 @@ public class Reservation {
 	}
 
 	// Metodos
-	// Conta dias entre checkin e checkout
+	// Metodo - Conta dias entre checkin e checkout
 	public long duration() {
 		long diff = checkOut.getTime() - checkIn.getTime();
 		// TimeUnit converte diferença em milissegundos em dias
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 
-	// Atualização da reserva
-	public void updateDates(Date checkIn, Date checkOut) {
+	// Método - Atualização da reserva
+	public String  updateDates(Date checkIn, Date checkOut) {
+		Date now = new Date(); // Criando a data atual
+		// Verificando se a data do check-n ou check-out é posterior a data atual
+		if (checkIn.before(now) || checkOut.before(now)) {
+			return "Erro nas reservas. As datas das reservas para atualização devem ser posteriores a data atual";
+		}
+
+		if (!checkOut.after(checkIn)) {
+			return "A data do check-out deve ser posterior a de check-in";
+
+		}
+		
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
+		return null; //Se retornar nulo é porque não deu nenum erro
 	}
 
 	@Override
