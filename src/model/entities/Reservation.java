@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.execptions.DomainException;
+
 public class Reservation {
 
 	// Atributos
@@ -14,7 +16,12 @@ public class Reservation {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	// Construtor com atributos
-	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
+	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) throws DomainException {
+		// Verificando se a data do check-n ou check-out é posterior a data atual
+		if (!checkOut.after(checkIn)) {
+			throw new DomainException("A data do check-out deve ser posterior a de check-in");
+		}
+		
 		this.roomNumber = roomNumber;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -46,21 +53,23 @@ public class Reservation {
 	}
 
 	// Método - Atualização da reserva
-	public String  updateDates(Date checkIn, Date checkOut) {
+	//Throws lança uma exceção para "DomainException"
+	public void  updateDates(Date checkIn, Date checkOut) throws DomainException {
+		
 		Date now = new Date(); // Criando a data atual
 		// Verificando se a data do check-n ou check-out é posterior a data atual
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "Erro nas reservas. As datas das reservas para atualização devem ser posteriores a data atual";
+			//Temos que lançar uma exceção "throw"
+			throw new DomainException("As datas das reservas para atualização devem ser posteriores a data atual");
 		}
 
 		if (!checkOut.after(checkIn)) {
-			return "A data do check-out deve ser posterior a de check-in";
-
+			throw new DomainException("A data do check-out deve ser posterior a de check-in");
 		}
 		
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		return null; //Se retornar nulo é porque não deu nenum erro
+		
 	}
 
 	@Override
