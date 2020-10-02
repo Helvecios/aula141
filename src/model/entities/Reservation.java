@@ -46,7 +46,7 @@ public class Reservation {
 	}
 
 	// Atualização da reserva
-	public void updateDates(Date checkIn, Date checkout) {
+	public void updateDates(Date checkIn, Date checkOut) {
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
 	}
